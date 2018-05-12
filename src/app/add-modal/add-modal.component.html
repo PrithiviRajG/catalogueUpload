@@ -1,0 +1,78 @@
+<form (ngSubmit)="addModel()" #addModelForm="ngForm">
+    <div class="container">
+<mat-form-field>
+    <mat-select required  name="vehicleType"
+    #vehicleType="ngModel" (change)="vechicleTypeChange()" [(ngModel)]="selectedVehicle.vehicleType" placeholder="Vehicle Type">
+      <mat-option *ngFor="let vehicleType of vehicleTypes" [value]="vehicleType">
+        {{ vehicleType }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+      <mat-select required  name="vehicle"
+      #vehicle="ngModel" [(ngModel)]="selectedVehicle.vehicleName" placeholder="Vehicle">
+        <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+          {{ vehicle }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input required name="modelName"
+        #modelName="ngModel" [(ngModel)]="selectedVehicle.modelName" matInput placeholder="Model Name">
+      </mat-form-field>
+
+      <mat-form-field>
+          <input required name="modelNumber"
+          #modelNumber="ngModel" [(ngModel)]="selectedVehicle.modelNumber" matInput placeholder="Model Number">
+        </mat-form-field>
+        </div>
+
+        <mat-action-row>
+            <button [disabled]="!addModelForm.form.valid" mat-raised-button color="primary">Submit</button>
+            <button mat-raised-button color="warn" (click)="addModelForm.reset()">Cancel</button>
+          </mat-action-row>
+
+      </form>
+
+
+      <div class="example-header">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+          </mat-form-field>
+        </div>
+  
+      <mat-table  #table [dataSource]="dataSource" matSort>
+    
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+    
+       <!-- Vehicle Type Column -->
+      <ng-container matColumnDef="vehicleType">
+          <mat-header-cell mat-sort-header *matHeaderCellDef> Vehicle Type </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.vehicleType}} </mat-cell>
+        </ng-container>
+
+        <!-- Vehicle Name Column -->
+      <ng-container matColumnDef="vehicleName">
+          <mat-header-cell mat-sort-header *matHeaderCellDef> Vehicle Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.vehicleName}} </mat-cell>
+        </ng-container>
+
+        <!-- Model Name Column -->
+      <ng-container matColumnDef="modelName">
+          <mat-header-cell mat-sort-header *matHeaderCellDef> Model Name </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.modelName}} </mat-cell>
+        </ng-container>
+
+        <!-- Model Number Column -->
+      <ng-container matColumnDef="modelNumber">
+          <mat-header-cell mat-sort-header *matHeaderCellDef> Model Number </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.modelNumber}} </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>  
