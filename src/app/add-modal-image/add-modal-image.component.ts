@@ -3,6 +3,7 @@ import {SharedServiceService} from '../shared-service.service';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireStorage, AngularFireUploadTask } from 'angularfire2/storage';
 import { Observable } from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
 import {Vehicle} from '../vehicle';
 
 @Component({
@@ -117,10 +118,22 @@ export class AddModalImageComponent implements OnInit {
 
     // Progress monitoring
     this.percentage = this.task.percentageChanges();
-    this.snapshot   = this.task.snapshotChanges()
+    this.snapshot   = this.task.snapshotChanges().pipe(
+      tap(snap => {
+        console.log(snap)
+        if (snap.bytesTransferred === snap.totalBytes) {
+          // Update firestore on completion
+          this.itemDoc.doc(this.selectedVehicle.vehicleType.toString()+"_"+this.selectedVehicle.vehicleName.toString()).update({"imgPath" : path});
+          console.log("sfsd "+this.task.downloadURL());
+        }
+      })
+)
 
     // The file's download URL
     this.downloadURL = this.task.downloadURL(); 
+    this.downloadURL.subscribe((url)=>{
+      console.log(`URL ${url}`)
+    });
   }
 
   // Determines if the upload task is active
