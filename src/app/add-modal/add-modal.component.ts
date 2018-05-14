@@ -35,6 +35,8 @@ export class AddModalComponent {
     this.itemDoc = afs.collection('VehicleModelDetails');
     this.vehicleDetails = this.itemDoc.valueChanges();
     this.vehicleDetails.subscribe((data) => {
+      console.log(data);
+      console.log(data[0])
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
     })

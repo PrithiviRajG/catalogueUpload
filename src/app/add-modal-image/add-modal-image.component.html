@@ -1,3 +1,95 @@
-<p>
-  add-modal-image works!
-</p>
+<form (ngSubmit)="addModelImage()" #addModelForm="ngForm">
+    <div class="container">
+<mat-form-field>
+  <mat-select required  name="vehicleType"
+  #vehicleType="ngModel" (change)="vechicleTypeChange()" [(ngModel)]="selectedVehicle.vehicleType" placeholder="Vehicle Type">
+    <mat-option *ngFor="let vehicleType of vehicleTypes" [value]="vehicleType">
+      {{ vehicleType }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+    <mat-select required  name="vehicle"
+    #vehicle="ngModel" (change)="vechicleChange()" [(ngModel)]="selectedVehicle.vehicleName" placeholder="Vehicle">
+      <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+        {{ vehicle }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select required  name="vehicleModelsName"
+    #vehicleModelsName="ngModel" [(ngModel)]="selectedVehicle.modelName" placeholder="Vehicle Models">
+      <mat-option *ngFor="let vehicleModel of vehicleModels" [value]="vehicleModel.modelName">
+        {{ vehicleModel.modelName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select required  name="vehicleModelNumbers"
+    #vehicleModelNumbers="ngModel" [(ngModel)]="selectedVehicle.modelNumber" placeholder="Vehicle Model Numbers">
+      <mat-option *ngFor="let vehicleModel of vehicleModels" [value]="vehicleModel.modelNumber">
+        {{ vehicleModel.modelNumber }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+    </div>
+</form>
+
+<div class="dropzone" 
+     dropZone
+     (hovered)="toggleHover($event)"
+     (dropped)="startUpload($event)"
+     [class.hovering]="isHovering">
+
+
+
+     <h3>AngularFire Drop Zone</h3>
+
+     <div class="file">
+        <label class="file-label">
+
+
+        <input class="file-input" type="file" (change)="startUpload($event.target.files)">
+
+
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fa fa-upload"></i>
+            </span>
+            <span class="file-label">
+              or choose a file…
+            </span>
+          </span>
+        </label>
+      </div>
+</div>
+
+<div *ngIf="percentage | async as pct">
+
+    <progress class="progress is-info" 
+              [value]="pct" 
+              max="100">        
+    </progress>
+  
+    {{ pct | number }}%
+  
+  </div>
+  
+  
+  <div *ngIf="snapshot | async as snap">
+    {{ snap.bytesTransferred | fileSize }} of {{ snap.totalBytes | fileSize }} 
+  
+    <div *ngIf="downloadURL | async as url">
+      <h3>Results!</h3>
+      <img [src]="url"><br>
+      <a [href]="url" target="_blank" rel="noopener">Download Me!</a>
+    </div> 
+  
+    <button (click)="task.pause()" class="button is-warning" [disabled]="!isActive(snap)">Pause</button>
+    <button (click)="task.cancel()" class="button is-danger" [disabled]="!isActive(snap)">Cancel</button>
+    <button (click)="task.resume()" class="button is-info"   [disabled]="!(snap?.state === 'paused')">Resume</button>
+  
+  </div>

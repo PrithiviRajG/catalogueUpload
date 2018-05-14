@@ -17,6 +17,8 @@ import {
 import { Router } from '@angular/router';
 
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +30,8 @@ import { AddPartsComponent } from './add-parts/add-parts.component';
 import { AddPartsImageComponent } from './add-parts-image/add-parts-image.component';
 import {SharedServiceService} from './shared-service.service';
 import { MapToIterable } from './map-to-iterable.pipe';
+import { DropZoneDirective } from './drop-zone.directive';
+import { FileSizePipe } from './file-size.pipe';
 
 @NgModule({
   declarations: [
@@ -36,11 +40,14 @@ import { MapToIterable } from './map-to-iterable.pipe';
     AddModalImageComponent,
     AddPartsComponent,
     AddPartsImageComponent,
-    MapToIterable
+    MapToIterable,
+    DropZoneDirective,
+    FileSizePipe
   ],
   imports: [
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
     AppRoutingModule,
     BrowserModule,
     FormsModule,
