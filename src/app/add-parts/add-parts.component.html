@@ -1,3 +1,118 @@
-<p>
-  add-parts works!
-</p>
+<form (ngSubmit)="addModelParts()" #addModelPartsForm="ngForm">
+  <div class="container">
+<mat-form-field>
+<mat-select required  name="vehicleType"
+#vehicleType="ngModel" (change)="vechicleTypeChange()" [(ngModel)]="selectedVehicle.vehicleType" placeholder="Vehicle Type">
+  <mat-option *ngFor="let vehicleType of vehicleTypes" [value]="vehicleType">
+    {{ vehicleType }}
+  </mat-option>
+</mat-select>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-select required  name="vehicle"
+  #vehicle="ngModel" (change)="vechicleChange()" [(ngModel)]="selectedVehicle.vehicleName" placeholder="Vehicle">
+    <mat-option *ngFor="let vehicle of vehicles" [value]="vehicle">
+      {{ vehicle }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-select required  name="vehicleModelsName"
+  #vehicleModelsName="ngModel" [(ngModel)]="selectedVehicle.modelName" placeholder="Vehicle Models">
+    <mat-option *ngFor="let vehicleModel of vehicleModels" [value]="vehicleModel.modelName">
+      {{ vehicleModel.modelName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-select required  name="vehicleModelNumbers"
+  #vehicleModelNumbers="ngModel" [(ngModel)]="selectedVehicle.modelNumber" placeholder="Vehicle Model Numbers">
+    <mat-option *ngFor="let vehicleModel of vehicleModels" [value]="vehicleModel.modelNumber">
+      {{ vehicleModel.modelNumber }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+  <input required name="partName"
+  #partName="ngModel" [(ngModel)]="selectedVehicle.partName" matInput placeholder="Part Name">
+</mat-form-field>
+
+<mat-form-field>
+  <input required name="oemNumber"
+  #oemNumber="ngModel" [(ngModel)]="selectedVehicle.oemNumber" matInput placeholder="OEE Number">
+</mat-form-field>
+
+<mat-form-field>
+  <input required name="manufacturerNumber"
+  #manufacturerNumber="ngModel" [(ngModel)]="selectedVehicle.manufacturerNumber" matInput placeholder="Manufacturer Number">
+</mat-form-field>
+
+  </div>
+
+  <mat-action-row>
+    <button [disabled]="!addModelPartsForm.form.valid" mat-raised-button color="primary">Submit</button>
+    <button mat-raised-button color="warn" (click)="addModelPartsForm.reset()">Cancel</button>
+  </mat-action-row>
+</form>
+
+<div class="example-header">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+</div>
+
+<mat-table  #table [dataSource]="dataSource" matSort>
+
+<!--- Note that these columns can be defined in any order.
+      The actual rendered columns are set as a property on the row definition" -->
+
+<!-- Vehicle Type Column -->
+<ng-container matColumnDef="vehicleType">
+  <mat-header-cell mat-sort-header *matHeaderCellDef> Vehicle Type </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.vehicleType}} </mat-cell>
+</ng-container>
+
+<!-- Vehicle Name Column -->
+<ng-container matColumnDef="vehicleName">
+  <mat-header-cell mat-sort-header *matHeaderCellDef> Vehicle Name </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.vehicleName}} </mat-cell>
+</ng-container>
+
+<!-- Model Name Column -->
+<ng-container matColumnDef="modelName">
+  <mat-header-cell mat-sort-header *matHeaderCellDef> Model Name </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.modelName}} </mat-cell>
+</ng-container>
+
+<!-- Model Number Column -->
+<ng-container matColumnDef="modelNumber">
+  <mat-header-cell mat-sort-header *matHeaderCellDef> Model Number </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.modelNumber}} </mat-cell>
+</ng-container>
+
+<!-- Part Name Column -->
+<ng-container matColumnDef="partName">
+  <mat-header-cell mat-sort-header *matHeaderCellDef> Part Name </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.partName}} </mat-cell>
+</ng-container>
+
+<!-- OEM Number Column -->
+<ng-container matColumnDef="oemNumber">
+  <mat-header-cell mat-sort-header *matHeaderCellDef> OEM Number </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.oemNumber}} </mat-cell>
+</ng-container>
+
+<!-- Manufacturer Number Column -->
+<ng-container matColumnDef="manufacturerNumber">
+  <mat-header-cell mat-sort-header *matHeaderCellDef> Manufacturer Number </mat-header-cell>
+  <mat-cell *matCellDef="let element"> {{element.manufacturerNumber}} </mat-cell>
+</ng-container>
+
+
+<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>  

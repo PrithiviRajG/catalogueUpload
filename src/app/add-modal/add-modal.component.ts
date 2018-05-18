@@ -39,7 +39,7 @@ export class AddModalComponent {
       console.log(data[0])
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.sort = this.sort;
-    })
+    });
    }
 
    applyFilter(filterValue: string) {
