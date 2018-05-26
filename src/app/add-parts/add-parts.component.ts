@@ -103,7 +103,7 @@ export class AddPartsComponent implements OnInit {
     "_"+this.selectedVehicle.vehicleName.toString()+
     "_"+this.selectedVehicle.modelName.toString()+
     "_"+this.selectedVehicle.modelNumber.toString()
-  ).set(JSON.parse(JSON.stringify(this.selectedVehicle)));
+  ).update(JSON.parse(JSON.stringify(this.selectedVehicle)));
   }
 
 }

@@ -21,6 +21,7 @@ export class AddModalComponent {
   dataSource= new MatTableDataSource();
 
   vehicleDetails: Observable<Vehicle[]>;
+  currectVechicles : Vehicle[];
   
 
   selectedVehicle : Vehicle;
@@ -28,6 +29,7 @@ export class AddModalComponent {
   displayedColumns = ['vehicleType', 'vehicleName', 'modelName', 'modelNumber'];
 
   constructor(private data: SharedServiceService, private afs: AngularFirestore) {
+    this.currectVechicles = new Array<Vehicle>();
     this.data.changePageName(this.pageName);
     this.selectedVehicle = new Vehicle();
     this.vehicleData = this.data.vehicleData;
@@ -35,6 +37,9 @@ export class AddModalComponent {
     this.itemDoc = afs.collection('VehicleModelDetails');
     this.vehicleDetails = this.itemDoc.valueChanges();
     this.vehicleDetails.subscribe((data) => {
+      for(let vechicle of data){
+        this.currectVechicles.push(vechicle);
+      }
       console.log(data);
       console.log(data[0])
       this.dataSource = new MatTableDataSource(data);
@@ -54,7 +59,10 @@ export class AddModalComponent {
 
   addModel() {
     console.log(this.selectedVehicle)
-    this.itemDoc.doc(this.selectedVehicle.vehicleType.toString()+"_"+this.selectedVehicle.vehicleName.toString()).set(JSON.parse(JSON.stringify(this.selectedVehicle)));
+    this.currectVechicles.push(this.selectedVehicle);
+    console.log("adding Entry")
+    //this.itemDoc.doc(this.selectedVehicle.vehicleType.toString()+"_"+this.selectedVehicle.vehicleName.toString()).collection(`${this.selectedVehicle.modelName}`).add(JSON.parse(JSON.stringify(this.selectedVehicle)));       
+    this.itemDoc.doc(this.selectedVehicle.vehicleType.toString()+"_"+this.selectedVehicle.vehicleName.toString()).set(JSON.parse(JSON.stringify(this.selectedVehicle)));       
   }
 
   vechicleTypeChange() {
